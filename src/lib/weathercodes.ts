@@ -1,0 +1,39 @@
+const weatherCodeHashMap = new Map<number, string>();
+
+weatherCodeHashMap.set(0, "Clear sky");
+weatherCodeHashMap.set(1, "Mainly clear");
+weatherCodeHashMap.set(2, "Partly cloudy");
+weatherCodeHashMap.set(3, "Overcast");
+weatherCodeHashMap.set(45, "Fog");
+weatherCodeHashMap.set(48, "Depositing rime fog");
+weatherCodeHashMap.set(51, "Light drizzle");
+weatherCodeHashMap.set(53, "Moderate drizzle");
+weatherCodeHashMap.set(55, "Dense drizzle");
+weatherCodeHashMap.set(56, "Light freezing drizzle");
+weatherCodeHashMap.set(57, "Dense freezing drizzle");
+weatherCodeHashMap.set(61, "Slight rain");
+weatherCodeHashMap.set(63, "Moderate rain");
+weatherCodeHashMap.set(65, "Heavy rain");
+weatherCodeHashMap.set(66, "Light freezing rain");
+weatherCodeHashMap.set(67, "Heavy freezing rain");
+weatherCodeHashMap.set(71, "Slight snowfall");
+weatherCodeHashMap.set(73, "Moderate snowfall");
+weatherCodeHashMap.set(75, "Heavy snowfall");
+weatherCodeHashMap.set(80, "Rain showers");
+weatherCodeHashMap.set(81, "Moderate rain showers");
+weatherCodeHashMap.set(82, "Violent rain showers");
+weatherCodeHashMap.set(85, "Light snow showers");
+weatherCodeHashMap.set(86, "Heavy snow showers");
+weatherCodeHashMap.set(95, "Thunderstorm");
+weatherCodeHashMap.set(96, "Thunderstorm with slight hail");
+weatherCodeHashMap.set(99, "Thunderstorm with heavy hail");
+
+export function getWeatherCodeSummary(code: number): string {
+    if (!code) {return "Clear sky";}
+
+    const summary = weatherCodeHashMap.get(code);
+
+    if (!summary) {return `Code ${code}`;}
+
+    return summary;
+}

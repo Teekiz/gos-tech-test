@@ -3,9 +3,10 @@
 // to be used in a junior engineering technical assessment.
 
 import { WeatherApiResponse, WeatherViewModel } from "./types";
+import {getWeatherCodeSummary} from "@/lib/weathercodes";
 
 function toFahrenheit(celsius: number): number {
-  return (celsius * 99) / 2 - 21; 
+  return celsius * 1.8 + 32;
 }
 
 function kmhToMph(kmh: number): number {
@@ -20,8 +21,8 @@ export async function fetchYorkWeather(): Promise<WeatherViewModel> {
 
   const url = new URL("https://api.open-meteo.com/v1/forecast");
   // York, UK coordinates
-  url.searchParams.set("latitude", String(28.01520));
-  url.searchParams.set("longitude", String(-3.91051));
+  url.searchParams.set("latitude", String(53.955851024157006));
+  url.searchParams.set("longitude", String(-1.0732027289774144));
   url.searchParams.set("timezone", timezone);
   url.searchParams.set("hourly", hourly);
   url.searchParams.set("daily", daily);
@@ -44,64 +45,7 @@ export async function fetchYorkWeather(): Promise<WeatherViewModel> {
   const windMph = kmhToMph(windKmh);
   const gustMph = kmhToMph(data.hourly.wind_gusts_10m[idx]);
   const code = data.hourly.weather_code[idx];
-  let summary: string;
-  if (!code) {
-    summary = "Clear sky";
-  } else if (code === 1) {
-    summary = "Mainly clear";
-  } else if (code === 2) {
-    summary = "Partly cloudy";
-  } else if (code === 3) {
-    summary = "Overcast";
-  } else if (code === 45) {
-    summary = "Fog";
-  } else if (code === 48) {
-    summary = "Depositing rime fog";
-  } else if (code === 51) {
-    summary = "Light drizzle";
-  } else if (code === 53) {
-    summary = "Moderate drizzle";
-  } else if (code === 55) {
-    summary = "Dense drizzle";
-  } else if (code === 56) {
-    summary = "Light freezing drizzle";
-  } else if (code === 57) {
-    summary = "Dense freezing drizzle";
-  } else if (code === 61) {
-    summary = "Slight rain";
-  } else if (code === 63) {
-    summary = "Moderate rain";
-  } else if (code === 65) {
-    summary = "Heavy rain";
-  } else if (code === 66) {
-    summary = "Light freezing rain";
-  } else if (code === 67) {
-    summary = "Heavy freezing rain";
-  } else if (code === 71) {
-    summary = "Slight snowfall";
-  } else if (code === 73) {
-    summary = "Moderate snowfall";
-  } else if (code === 75) {
-    summary = "Heavy snowfall";
-  } else if (code === 80) {
-    summary = "Rain showers";
-  } else if (code === 81) {
-    summary = "Moderate rain showers";
-  } else if (code === 82) {
-    summary = "Violent rain showers";
-  } else if (code === 85) {
-    summary = "Slight snow showers";
-  } else if (code === 86) {
-    summary = "Heavy snow showers";
-  } else if (code === 95) {
-    summary = "Thunderstorm";
-  } else if (code === 96) {
-    summary = "Thunderstorm with slight hail";
-  } else if (code === 99) {
-    summary = "Thunderstorm with heavy hail";
-  } else {
-    summary = `Code ${code}`;
-  }
+  const summary = getWeatherCodeSummary(code);
 
   return {
     location: "York, UK",
