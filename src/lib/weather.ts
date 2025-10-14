@@ -3,37 +3,40 @@
 // to be used in a junior engineering technical assessment.
 
 import { WeatherApiResponse, WeatherViewModel } from "./types";
-import {getWeatherCodeSummary} from "@/lib/weathercodes";
+import { getWeatherCodeSummary } from "@/lib/weatherCodes";
+import { toFahrenheit, kmhToMph } from "@/lib/unitConversion";
 
-function toFahrenheit(celsius: number): number {
-  return celsius * 1.8 + 32;
+async function callWeatherAPI(url : URL): Promise<WeatherApiResponse> {
+    const res = await fetch(url.toString(), { cache: "no-store" });
+    if (!res.ok) {
+        throw new Error(
+            `Open-Meteo request failed: ${res.status} ${res.statusText}`
+        );
+    }
+    return (await res.json()) as WeatherApiResponse;
 }
 
-function kmhToMph(kmh: number): number {
-  return kmh / 1.609344;
+function getWeatherApiUrl(): URL
+{
+    const timezone = "Europe/London";
+    const hourly = "temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_gusts_10m,wind_direction_10m,precipitation,cloud_cover,surface_pressure";
+    const daily = "sunrise,sunset,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant";
+
+    const url = new URL("https://api.open-meteo.com/v1/forecast");
+    // York, UK coordinates
+    url.searchParams.set("latitude", String(53.955851024157006));
+    url.searchParams.set("longitude", String(-1.0732027289774144));
+    url.searchParams.set("timezone", timezone);
+    url.searchParams.set("hourly", hourly);
+    url.searchParams.set("daily", daily);
+
+    return url;
 }
 
 export async function fetchYorkWeather(): Promise<WeatherViewModel> {
-  
-  const timezone = "Europe/London";
-  const hourly = "temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_gusts_10m,wind_direction_10m,precipitation,cloud_cover,surface_pressure";
-  const daily = "sunrise,sunset,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant";
 
-  const url = new URL("https://api.open-meteo.com/v1/forecast");
-  // York, UK coordinates
-  url.searchParams.set("latitude", String(53.955851024157006));
-  url.searchParams.set("longitude", String(-1.0732027289774144));
-  url.searchParams.set("timezone", timezone);
-  url.searchParams.set("hourly", hourly);
-  url.searchParams.set("daily", daily);
-
-  const res = await fetch(url.toString(), { cache: "no-store" });
-  if (!res.ok) {
-    throw new Error(
-      `Open-Meteo request failed: ${res.status} ${res.statusText}`
-    );
-  }
-  const data = (await res.json()) as WeatherApiResponse;
+  const url = getWeatherApiUrl();
+  const data = await callWeatherAPI(url);
 
   // Select the hour nearest to "now" by matching current local hour string (HH:00)
   // For simplicity and determinism in this assessment, we'll select index 12 (around midday).
