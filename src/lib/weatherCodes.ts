@@ -33,7 +33,5 @@ export function getWeatherCodeSummary(code: number): string {
 
     const summary = weatherCodeHashMap.get(code);
 
-    if (!summary) {return `Code ${code}`;}
-
-    return summary;
+    return !summary ? `Code ${code}` : summary;
 }

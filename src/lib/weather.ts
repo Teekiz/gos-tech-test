@@ -4,7 +4,7 @@
 
 import { WeatherApiResponse, WeatherViewModel } from "./types";
 import { getWeatherCodeSummary } from "@/lib/weatherCodes";
-import { toFahrenheit, kmhToMph } from "@/lib/unitConversion";
+import {toFahrenheit, kmhToMph, surfacePressureSummary} from "@/lib/unitConversion";
 
 async function callWeatherAPI(url : URL): Promise<WeatherApiResponse> {
     const res = await fetch(url.toString(), { cache: "no-store" });
@@ -66,5 +66,6 @@ export async function fetchYorkWeather(): Promise<WeatherViewModel> {
     sunrise: new Date(data.daily.sunrise?.[0]).toLocaleString(),
     sunset: new Date(data.daily.sunset?.[0]).toLocaleString(),
     uvIndexMax: data.daily.uv_index_max?.[0],
+    surfacePressureSummary: surfacePressureSummary(data.hourly.surface_pressure[idx])
   };
 }

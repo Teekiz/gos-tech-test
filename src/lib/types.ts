@@ -75,4 +75,5 @@ export type WeatherViewModel = {
   sunrise?: string;
   sunset?: string;
   uvIndexMax?: number;
+  surfacePressureSummary: string;
 };

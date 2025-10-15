@@ -71,25 +71,28 @@ export default async function Home() {
             style={{ background: "var(--card)", borderColor: "var(--border)" }}
           >
             <h2 className="text-xl font-medium mb-2 text-white">At a glance</h2>
-            <ul className="space-y-1 text-sm">
-              <li style={{ color: "var(--foreground)" }}>
-                Apparent: {Math.round(weather.apparentC)}°C
-              </li>
-              <li style={{ color: "var(--foreground)" }}>
-                Humidity: {Math.round(weather.humidity)}%
-              </li>
-              <li style={{ color: "var(--foreground)" }}>
-                Cloud cover: {Math.round(weather.cloudCoverPct)}%
-              </li>
-              <li style={{ color: "var(--foreground)" }}>
-                Precipitation: {weather.precipitationMm} mm
-              </li>
-            </ul>
+              <ul className="space-y-1 text-sm">
+                  <li style={{color: "var(--foreground)"}}>
+                      Apparent: {Math.round(weather.apparentC)}°C
+                  </li>
+                  <li style={{color: "var(--foreground)"}}>
+                      Humidity: {Math.round(weather.humidity)}%
+                  </li>
+                  <li style={{color: "var(--foreground)"}}>
+                      Cloud cover: {Math.round(weather.cloudCoverPct)}%
+                  </li>
+                  <li style={{color: "var(--foreground)"}}>
+                      Precipitation: {weather.precipitationMm} mm
+                  </li>
+                  <li style={{color: "var(--foreground)"}}>
+                      Pressure: {weather.surfacePressureSummary} ({weather.surfacePressureHpa} hPa)
+                  </li>
+              </ul>
           </div>
         </section>
 
-        {/* Secondary row with sunrise/sunset/UV if present */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          {/* Secondary row with sunrise/sunset/UV if present */}
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           <div
             className="rounded-xl shadow-xl shadow-green-950/25 border p-5"
             style={{ background: "var(--muted)", borderColor: "var(--border)" }}
