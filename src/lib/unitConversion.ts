@@ -6,13 +6,6 @@ export function kmhToMph(kmh: number): number {
     return kmh / 1.609344;
 }
 
-//a function to convert the surface pressure (hPa) from a numerical value to a description
-export function surfacePressureSummary(surfacePressureHpa: number): string {
-    if (surfacePressureHpa < 1000){
-        return "Low"
-    } else if (surfacePressureHpa >= 1020){
-        return "High"
-    } else {
-        return "Average"
-    }
+export function metersToMiles(m: number): number {
+    return Math.round((m / 1000) *  0.6214);
 }

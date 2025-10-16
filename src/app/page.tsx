@@ -84,27 +84,47 @@ export default async function Home() {
                   <li style={{color: "var(--foreground)"}}>
                       Precipitation: {weather.precipitationMm} mm
                   </li>
-                  <li style={{color: "var(--foreground)"}}>
-                      Pressure: {weather.surfacePressureSummary} ({weather.surfacePressureHpa} hPa)
-                  </li>
               </ul>
           </div>
         </section>
 
-          {/* Secondary row with sunrise/sunset/UV if present */}
+          {/* Secondary row with visibility */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div
+                  className="rounded-xl shadow-xl shadow-green-950/25 border p-5"
+                  style={{background: "var(--muted)", borderColor: "var(--border)"}}
+              >
+                  <h3 className="text-lg font-semibold mb-2 text-white">Visibility</h3>
+                  <p className="text-base" style={{color: "var(--foreground)"}}>
+                      {weather.visibilitySummary} ({weather.visibilityMiles} miles)
+                  </p>
+              </div>
+
+              <div
+                  className="rounded-xl shadow-xl shadow-green-950/25 border p-5"
+                  style={{background: "var(--muted)", borderColor: "var(--border)"}}
+              >
+                  <h3 className="text-lg font-semibold mb-2 text-white">Pressure</h3>
+                  <p className="text-base" style={{color: "var(--foreground)"}}>
+                      {weather.surfacePressureSummary} ({weather.surfacePressureHpa} hpa)
+                  </p>
+              </div>
+          </section>
+
+          {/* Third row with sunrise/sunset/UV if present */}
           <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-          <div
-            className="rounded-xl shadow-xl shadow-green-950/25 border p-5"
-            style={{ background: "var(--muted)", borderColor: "var(--border)" }}
-          >
-            <h3 className="text-lg font-semibold mb-2 text-white">Sunrise</h3>
-            <p className="text-base" style={{ color: "var(--foreground)" }}>
-              {weather.sunrise ?? "—"}
-            </p>
-          </div>
-          <div
-            className="rounded-xl shadow-xl shadow-green-950/25 border p-5"
-            style={{ background: "var(--muted)", borderColor: "var(--border)" }}
+              <div
+                  className="rounded-xl shadow-xl shadow-green-950/25 border p-5"
+                  style={{background: "var(--muted)", borderColor: "var(--border)"}}
+              >
+                  <h3 className="text-lg font-semibold mb-2 text-white">Sunrise</h3>
+                  <p className="text-base" style={{color: "var(--foreground)"}}>
+                      {weather.sunrise ?? "—"}
+                  </p>
+              </div>
+              <div
+                  className="rounded-xl shadow-xl shadow-green-950/25 border p-5"
+                  style={{background: "var(--muted)", borderColor: "var(--border)" }}
           >
             <h3 className="text-lg font-semibold mb-2 text-white">Sunset</h3>
             <p className="text-base" style={{ color: "var(--foreground)" }}>
@@ -123,6 +143,8 @@ export default async function Home() {
             </p>
           </div>
         </section>
+
+
       </div>
     </main>
   );

@@ -3,8 +3,8 @@
 // to be used in a junior engineering technical assessment.
 
 import { WeatherApiResponse, WeatherViewModel } from "./types";
-import { getWeatherCodeSummary } from "@/lib/weatherCodes";
-import {toFahrenheit, kmhToMph, surfacePressureSummary} from "@/lib/unitConversion";
+import {toFahrenheit, kmhToMph, metersToMiles} from "@/lib/unitConversion";
+import {getSurfacePressureSummary, getVisibilityIndexSummary, getWeatherCodeSummary} from "@/lib/unitSummarys";
 
 async function callWeatherAPI(url : URL): Promise<WeatherApiResponse> {
     const res = await fetch(url.toString(), { cache: "no-store" });
@@ -19,7 +19,7 @@ async function callWeatherAPI(url : URL): Promise<WeatherApiResponse> {
 function getWeatherApiUrl(): URL
 {
     const timezone = "Europe/London";
-    const hourly = "temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_gusts_10m,wind_direction_10m,precipitation,cloud_cover,surface_pressure";
+    const hourly = "temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_gusts_10m,wind_direction_10m,precipitation,cloud_cover,surface_pressure,visibility";
     const daily = "sunrise,sunset,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant";
 
     const url = new URL("https://api.open-meteo.com/v1/forecast");
@@ -49,6 +49,8 @@ export async function fetchYorkWeather(): Promise<WeatherViewModel> {
   const gustMph = kmhToMph(data.hourly.wind_gusts_10m[idx]);
   const code = data.hourly.weather_code[idx];
   const summary = getWeatherCodeSummary(code);
+  const visibilitySummary = getVisibilityIndexSummary(data.hourly.visibility[idx]);
+  const visibilityKm = metersToMiles(data.hourly.visibility[idx]);
 
   return {
     location: "York, UK",
@@ -66,6 +68,8 @@ export async function fetchYorkWeather(): Promise<WeatherViewModel> {
     sunrise: new Date(data.daily.sunrise?.[0]).toLocaleString(),
     sunset: new Date(data.daily.sunset?.[0]).toLocaleString(),
     uvIndexMax: data.daily.uv_index_max?.[0],
-    surfacePressureSummary: surfacePressureSummary(data.hourly.surface_pressure[idx])
+    surfacePressureSummary: getSurfacePressureSummary(data.hourly.surface_pressure[idx]),
+    visibilityMiles: visibilityKm,
+    visibilitySummary: visibilitySummary
   };
 }

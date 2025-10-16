@@ -19,6 +19,7 @@ export type WeatherApiResponse = {
     precipitation: number[]; // mm
     cloud_cover: number[]; // %
     surface_pressure: number[]; // hPa
+    visibility: number[]; // viewing distance in meters
   };
   hourly_units: {
     time?: string; // usually not present in units, included for completeness
@@ -32,6 +33,7 @@ export type WeatherApiResponse = {
     precipitation: string;
     cloud_cover: string;
     surface_pressure: string;
+    visibility: number;
   };
   daily: {
     time: string[]; // ISO8601 local date strings
@@ -76,4 +78,6 @@ export type WeatherViewModel = {
   sunset?: string;
   uvIndexMax?: number;
   surfacePressureSummary: string;
+  visibilityMiles: number; //convert from m to miles
+  visibilitySummary: string;
 };

@@ -1,4 +1,4 @@
-const weatherCodeHashMap = new Map<number, string>();
+export const weatherCodeHashMap = new Map<number, string>();
 
 weatherCodeHashMap.set(0, "Clear sky");
 weatherCodeHashMap.set(1, "Mainly clear");
@@ -28,10 +28,3 @@ weatherCodeHashMap.set(95, "Thunderstorm");
 weatherCodeHashMap.set(96, "Thunderstorm with slight hail");
 weatherCodeHashMap.set(99, "Thunderstorm with heavy hail");
 
-export function getWeatherCodeSummary(code: number): string {
-    if (!code) {return "Clear sky";}
-
-    const summary = weatherCodeHashMap.get(code);
-
-    return !summary ? `Code ${code}` : summary;
-}
